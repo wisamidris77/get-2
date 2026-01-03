@@ -148,7 +148,7 @@ class NotFoundItemsI18n {
   static List<String> items = [];
 
   static void add(String item) {
-    if (RegExp(r'^[a-zA-Z_]+$').hasMatch(item) && !items.contains(item)) {
+    if (RegExp(r'^[a-zA-Z_][a-zA-Z0-9_]*$').hasMatch(item) && !items.contains(item)) {
       items.add(item);
     }
   }
