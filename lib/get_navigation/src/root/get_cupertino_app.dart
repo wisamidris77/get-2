@@ -62,8 +62,8 @@ class GetCupertinoApp extends StatelessWidget {
   final BackButtonDispatcher? backButtonDispatcher;
   final CupertinoThemeData? theme;
   final bool useInheritedMediaQuery;
-  const GetCupertinoApp({
-    Key? key,
+  GetCupertinoApp({
+    super.key,
     this.theme,
     this.navigatorKey,
     this.home,
@@ -117,11 +117,10 @@ class GetCupertinoApp extends StatelessWidget {
   })  : routeInformationProvider = null,
         routeInformationParser = null,
         routerDelegate = null,
-        backButtonDispatcher = null,
-        super(key: key);
+        backButtonDispatcher = null;
 
   GetCupertinoApp.router({
-    Key? key,
+    super.key,
     this.theme,
     this.routeInformationProvider,
     RouteInformationParser<Object>? routeInformationParser,
@@ -180,8 +179,7 @@ class GetCupertinoApp extends StatelessWidget {
         onGenerateInitialRoutes = null,
         onUnknownRoute = null,
         routes = null,
-        initialRoute = null,
-        super(key: key) {
+        initialRoute = null {
     Get.routerDelegate = routerDelegate;
     Get.routeInformationParser = routeInformationParser;
   }
@@ -226,13 +224,13 @@ class GetCupertinoApp extends StatelessWidget {
                 transitionDuration ?? Get.defaultTransitionDuration,
           );
         },
-        builder: (_) => routerDelegate != null
+        builder: (controller) => routerDelegate != null
             ? CupertinoApp.router(
                 routerDelegate: routerDelegate!,
                 routeInformationParser: routeInformationParser!,
                 backButtonDispatcher: backButtonDispatcher,
                 routeInformationProvider: routeInformationProvider,
-                key: _.unikey,
+                key: controller.unikey,
                 theme: theme,
                 builder: defaultBuilder,
                 title: title,
@@ -252,7 +250,7 @@ class GetCupertinoApp extends StatelessWidget {
                 // useInheritedMediaQuery: useInheritedMediaQuery,
               )
             : CupertinoApp(
-                key: _.unikey,
+                key: controller.unikey,
                 theme: theme,
                 navigatorKey: (navigatorKey == null
                     ? Get.key

@@ -1,4 +1,4 @@
-library rx_stream;
+
 
 import 'dart:async';
 

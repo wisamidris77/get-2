@@ -1,4 +1,4 @@
-part of rx_types;
+part of '../rx_types.dart';
 
 extension RxStringExt on Rx<String> {
   String operator +(String val) => _value + val;

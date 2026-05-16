@@ -1,4 +1,4 @@
-library rx_types;
+
 
 import 'dart:async';
 import 'dart:collection';
