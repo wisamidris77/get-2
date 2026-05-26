@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:flutter/foundation.dart'; // Added for kDebugMode
 import '../../../get_core/get_core.dart';
 
 class _IntlHost {
@@ -79,6 +79,8 @@ extension Trans on String {
   }
 
   String get tr {
+    NotFoundItemsI18n.checkAndTrack(this);
+
     // print('language');
     // print(Get.locale!.languageCode);
     // print('contains');
@@ -105,10 +107,8 @@ extension Trans on String {
       if (Get.translations.containsKey(fallback.languageCode) && Get.translations[fallback.languageCode]!.containsKey(this)) {
         return Get.translations[fallback.languageCode]![this]!;
       }
-      NotFoundItemsI18n.add(this);
       return this;
     } else {
-      NotFoundItemsI18n.add(this);
       return this;
     }
   }
@@ -143,16 +143,35 @@ extension Trans on String {
   }
 }
 
-
 class NotFoundItemsI18n {
-  static List<String> items = [];
+  static List<String> missingArabic = [];
+  static List<String> missingEnglish = [];
 
-  static void add(String item) {
+  static void checkAndTrack(String key) {
+    if (!kDebugMode) return;
+
     final pattern = RegExp(r'^(?:[a-zA-Z_][a-zA-Z0-9_]*\.)?[a-zA-Z_][a-zA-Z0-9_]*$');
-    
-    if (pattern.hasMatch(item) && !items.contains(item)) {
-      items.add(item);
+    if (!pattern.hasMatch(key)) return;
+
+    if (!_existsInLanguage('ar', key) && !missingArabic.contains(key)) {
+      missingArabic.add(key);
+    }
+
+    if (!_existsInLanguage('en', key) && !missingEnglish.contains(key)) {
+      missingEnglish.add(key);
     }
   }
 
+  static bool _existsInLanguage(String langCode, String key) {
+    final translations = Get.translations;
+    
+    for (final mapKey in translations.keys) {
+      if (mapKey.startsWith(langCode)) {
+        if (translations[mapKey]?.containsKey(key) ?? false) {
+          return true; 
+        }
+      }
+    }
+    return false; 
+  }
 }
